@@ -1,0 +1,3 @@
+Demander la taille de la LA à l'utilisateur soit taille minimaleet maximale, soit le nombre de LA
+Rajouter une table de mobilité pour faire des LA en fonction de comment l'utilisateur se déplaceCahque maille contient 4 valeurs : pourcentages de combien de gens se déplacent a gauche a droite en haut en bas
+Maille  = matrice de 3 dimensions

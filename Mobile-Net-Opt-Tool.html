@@ -1,0 +1,155 @@
+<!--This code is developed by Hakim MABED hmabed@gmail.com-->
+<!--14/04/2019                -->
+<!--Only for educational and personal use-->
+<!--Objective: Provide a tool for radio network engineering, training and testing-->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<meta charset="utf-8">
+
+	<title>Mobile Network Optimization Tool</title>     
+	<link rel="shortcut icon" type="image/x-icon" href="https://leafletjs.com/examples/quick-start/docs/images/favicon.ico">
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+	integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+	crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+	integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+	crossorigin=""></script>
+	<script src="https://npmcdn.com/leaflet-geometryutil"></script>
+	<style>
+		<style>
+		html, body, #map-canvas {
+		height: 100%;
+		margin: 0px;
+		padding: 0px
+		}
+		</style>
+	<style type="text/css">
+		body
+		{
+		   background-color: #FFFFFF;
+		   color: #000000;
+		   font-family: Arial;
+		   font-size: 13px;
+		   margin: 0;
+		   padding: 0;
+		}
+	</style>
+
+	<style type="text/css">
+		#conteneur {width:100%; margin:0 auto;}
+		#header {background-color: #FFD700;width:100%;}
+		#footer {background-color: #FFD700;width:100%;}
+		#sidebar {position:absolute;background-color: #C7C7C7;width:230px;}
+		#contenu {margin-left:230px;}
+		#mapid { height: 600px; }
+
+		#Combobox1
+		{
+		   border: 1px #A9A9A9 solid;
+		   background-color: #FFFFFF;
+		   color: #000000;
+		   font-family: Arial;
+		   font-size: 13px;
+		}
+
+		#message
+		{
+		   border: 0px #A9A9A9 solid;
+		   background-color: #FFD700;
+		   font-family: Arial;
+		   font-size: 13px;
+		}
+	</style>
+
+	<script
+			src="https://code.jquery.com/jquery-3.4.1.min.js"
+			integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			crossorigin="anonymous"></script>
+</head>
+  <body>
+	<div id="conteneur">
+		<div id="header">
+			<div> <input type="text" style="width:400px;" id="message" value="Sélectionnez le coin inférieur gauche de la zone d'étude !" readonly> </div>
+		</div>
+		<div id="sidebar">
+			<div><label id="labeltech">Technologie radio : </label></div>
+			<select name="Combobox1" size="1" id="techno" style="width: 98%;">
+				<option selected value="1">GSM</option>
+				<option value="2">UMTS</option>
+				<option value="3">LTE</option>
+				<option value="4">TDF</option>
+				<option value="5">HSDPA</option>
+				<option value="6">WiMAX</option>
+			</select>
+			<div><label id="labelbande"  style="width: 50%;">Bande(Mhz) : </label><input type="number" id="bande" name="bande" value="1800" align="right" style="width: 50%;"></div>
+			<div><label id="labelseuil" style="width: 50%;">Seuil (Db) : </label><input type="number" id="seuil" name="seuil" value="-100" style="width: 50%;"></div>
+			<div> <label id="labelhautZone" style="width: 30%;">Hauteur de la zone (200m) : </label><input type="number" id="hautZone" name="hautZone" value="3" style="width: 20%;"></div>
+			<div> <label id="labellargZone" style="width: 30%;">Largeur de la zone (200m) : </label><input type="number" id="largZone" name="largZone" value="3" style="width: 20%;"></div>
+			<div><label id="labelmodele">Modèle de propagation : </label></div>
+		  <select name="Combobox1" size="1" id="methode" style="width: 98%;" onchange="choixenv()">
+			<option selected value="1">Single Knife Edge (rural)</option>
+			<option value="2">Bullington (rural)</option>
+			<option value="3">Epstein Method</option>
+			<option value="4">Deygout (rural)</option>
+			<option value="5">Causebrook</option>
+			<option value="6">Okumura</option>
+			<option value="7">Okumura-Hata</option>
+			<option value="8">COST231-Hata (rural,urban)</option>
+			<option value="9">Walfisch-Ikegami(urban)</option>
+			<option value="10">Stanford University Interim</option>
+		  </select>
+		  <div> <input type="button" id="cartepuissance" value="Cartographie de puissance" onclick="cartepuissance()" disabled='disabled' style="width: 98%;"/></div>
+		  <div> <input type="button" id="carteinterference" value="Cartographie des C/I" onclick="carteinterference()" disabled='disabled' style="width: 98%;"/></div>
+		  <div> <input type="button" id="cartehandover" value="Cartographie de handover" onclick="cartehandover()" disabled='disabled' style="width: 98%;"/></div>
+		  <div> <input type="button" id="cartecellule" value="Cartographie des cellules" onclick="cartecellule()" disabled='disabled' style="width: 98%;"/></div>
+		  <div> <input type="button" id="carteresidence" value="Temps de résidance" onclick="carteresidence()" disabled='disabled' style="width: 98%;"/></div>
+		  <div id="frameantenna">
+				<label id="labomni">Omni : </label>
+				<input type="radio" name="omni" id="omni" value="omni" />
+				<label id="labsect">Sectorielle : </label>
+				<input type="radio" name="omni" id="sect" value="sectorial" />
+				<div><label id="labelpower">Puissance rayonnée: </label></div>
+				<div> <input type="number" id="power" name="power" value="30" style="width: 98%;"></div>
+				<div><label id="labeltilt">Tilt : </label></div>
+				<div> <input type="number" id="tilt" name="tilt" value="30" style="width: 98%;"></div>
+				<div><label id="labelazimut">Azimut : </label></div>
+				<div> <input type="number" id="azimut" name="azimut" value="0" style="width: 98%;"></div>
+				<div><label id="freq1">Fréquence 1 : </label></div>
+				<div> <input type="number" id="frequence1" name="frequence1" style="width: 98%;"></div>
+				<div><label id="freq1">Fréquence 2 : </label></div>
+				<div> <input type="number" id="frequence2" name="frequence2" style="width: 98%;"></div>
+				<div><label id="freq1">Fréquence 3 : </label></div>
+				<div> <input type="number" id="frequence3" name="frequence3" style="width: 98%;"></div>
+				<div><label id="freq1">Fréquence 4 : </label></div>
+				<div> <input type="number" id="frequence4" name="frequence4" style="width: 98%;"></div>
+		  </div>
+		</div>
+		<div id="contenu">
+			
+			<div id="mapid"></div>
+		</div>
+		<div id="footer">
+			<div>
+		  <button type="button" id="propag" value="Propagation" onclick="propagation()" disabled='disabled'> <img src="img/propag.png"> </button>
+		  <button type="button" id="remove" value="Effacer" onclick="vider()"> <img src="img/effacer.png"> </button>
+		  <button type="button" id="routes" value="Extraire les routes de la zone (0,0)" onclick="routes()" disabled='disabled'><img src="img/routes.png"> </button>
+		  <button type="button" id="completer" value="Compléter les routes" onclick="completer()" disabled='disabled'><img src="img/routes+.png"> </button>
+		  <button type="button" id="axes" value="Ajouter un axe routier" onclick="addaxe()" disabled='disabled'><img src="img/routes.png"> </button>
+		  <button type="button" id="batiment" value="Ajouter un bâtiment" onclick="batiment()" disabled='disabled'><img src="img/bat.png"> </button>
+		  <button type="button" id="saveBat" value="Enregister les bâtiments" onclick="saveNet()" disabled='disabled'><img src="img/saveNet.png"> </button>
+		  <button type="button" id="loadBat" value="Charger les bâtiments" onclick="loadNet()" disabled='disabled'><img src="img/loadNet.png"> </button>
+		  <button type="button" id="antenne" value="Ajouter une antenne" onclick="addAntenne()" disabled='disabled'><img src="img/antenna.png"> </button>
+		  <button type="button" id="ecole" value="Ajouter une zone sensible" onclick="addEcole()" disabled='disabled'><img src="img/ecole.png"> </button>
+		  <input type="file" id="fileinput" />
+		  </div>
+		</div>
+	</div>
+  </body>
+<script type="text/javascript" src="script.js"></script>
+
+</html>
