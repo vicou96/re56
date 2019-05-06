@@ -94,7 +94,10 @@ var estSurRoute=[];
 var orientation=[];
 
 var puissance=[];
+var cellules=[];
+var LA=[];
 
+var mobilite=[];
 var colors=[];
 
 var start;
@@ -783,6 +786,8 @@ function addAntenne(){
 
 function cartecellule(){
     vider();
+    cellules = Array(hautZone*pdm).fill(Array(largZone*pdm).fill(-1));
+    mobilite = Array(hautZone*pdm).fill(Array(largZone*pdm).fill(Array(4).fill(0)));
     seuil=parseInt(document.getElementById('seuil').value);
     coinSudlat=coinSud.lat;
     coinSudlng=coinSud.lng;
@@ -794,6 +799,7 @@ function cartecellule(){
             for(a=0;a<nbantennes;a++){
                 if(puissance[a][i][j]>max) {max=puissance[a][i][j];	bestant=a;}
             }
+            cellules[i][j] = bestant;
             if(max<seuil) continue;
             plat=coinSudlat+i*latBin;
             plng=coinSudlng+j*lngBin;
@@ -817,6 +823,8 @@ function cartecellule(){
             bins.push(bin);
         }
     }
+    fillMobiliteTableRand();
+    document.getElementById('laButton').disabled = '';
 }
 function choixenv(){
     m=document.getElementById('methode').value;
@@ -908,6 +916,15 @@ function carteinterference(){
             bins.push(bin);
         }
     }
+}
+function fillMobiliteTableRand() {
+    mobilite.forEach(function(array2) {
+        array2.forEach(function (array3) {
+            array3.forEach(function (elem) {
+                elem = 1;
+            });
+        });
+    });
 }
 function onMapClick(e) {
     //alert("You clicked the map at " + e.latlng);

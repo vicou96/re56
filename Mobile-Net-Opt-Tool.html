@@ -107,7 +107,15 @@
 		  <div> <input type="button" id="cartehandover" value="Cartographie de handover" onclick="cartehandover()" disabled='disabled' style="width: 98%;"/></div>
 		  <div> <input type="button" id="cartecellule" value="Cartographie des cellules" onclick="cartecellule()" disabled='disabled' style="width: 98%;"/></div>
 		  <div> <input type="button" id="carteresidence" value="Temps de résidance" onclick="carteresidence()" disabled='disabled' style="width: 98%;"/></div>
-		  <div id="frameantenna">
+		  <div id="la" style="background-color: #FFFFFF">
+			  <div><label id="zoneLocalisation">Zones de Localisations</label></div>
+			  <div><label id="labelminimum">Nombre de cellules minimum: </label></div>
+			  <div><input type="number" name="minLa" value="1"></div>
+			  <div><label id="labelmaximum">Nombre de cellules maximum: </label></div>
+			  <div><input type="number" name="maxLa" value="2"></div>
+			  <div><input type="button" id="laButton" onclick="findLa()" disabled="disabled" style="width: 98%;" value="Calcul des zones de localisation"></div>
+		  </div>
+			<div id="frameantenna">
 				<label id="labomni">Omni : </label>
 				<input type="radio" name="omni" id="omni" value="omni" />
 				<label id="labsect">Sectorielle : </label>
@@ -132,7 +140,7 @@
 			
 			<div id="mapid"></div>
 		</div>
-		<div id="footer">
+		<div id="footer" style="position: absolute">
 			<div>
 		  <button type="button" id="propag" value="Propagation" onclick="propagation()" disabled='disabled'> <img src="img/propag.png"> </button>
 		  <button type="button" id="remove" value="Effacer" onclick="vider()"> <img src="img/effacer.png"> </button>
