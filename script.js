@@ -940,6 +940,40 @@ function onMapDbClick(e) {
 
 var mymap = L.map('mapid').setView([47.094818, 5.491389], 13);
 
+function calculateLa(){
+
+    nbZoneMin = parseInt(document.getElementById('minLa').value);
+    nbZoneMax = parseInt(document.getElementById('maxLa').value);
+    if (nbantennes == nbZoneMin && nbantennes == nbZoneMax){
+        //Une zone par cellule(antenne)
+    }
+
+
+    for(i = 0;i<=nbantennes;i++){
+        for(j=0;j<=nbantennes;j++){
+            if(i==j){
+                continue;
+            }else{
+                for(x = 0;x<=cellules.length;x++){
+                    for(y = 0 ; y<=cellules.length;y++){
+                        if(cellules[x][y] == i+1){
+                            if (mobilite[x][y].length == 4){ //Pour l'instant, on aura au maximum 4 adjacent, à voir par la suite pour en avoir 8, est-ce que c'est mieux???
+                                if (cellules[x-1][y] == j+1){
+                                    //Ajouter la mobilité 0 dans la fréquence (Cette maille est adjacente a celle d'une autre cellule)
+                                }
+                            }
+                        }else {
+                            continue;
+                        }
+                    }
+                }
+
+
+            }
+        }
+    }
+}
+
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
