@@ -94,10 +94,12 @@ var estSurRoute=[];
 var orientation=[];
 
 var puissance=[];
+
+var zonearea = new ZoneArea();
 var cellules=[];
 var LA=[];
-
 var mobilite=[];
+
 var colors=[];
 
 var start;
@@ -786,8 +788,10 @@ function addAntenne(){
 
 function cartecellule(){
     vider();
-    cellules = Array(hautZone*pdm).fill(Array(largZone*pdm).fill(-1));
-    mobilite = Array(hautZone*pdm).fill(Array(largZone*pdm).fill(Array(4).fill(0)));
+    zonearea.cellules = Array(hautZone*pdm).fill(Array(largZone*pdm).fill(-1));
+    zonearea.mobilite = Array(hautZone*pdm).fill(Array(largZone*pdm).fill(Array(4).fill(0)));
+   /* cellules = Array(hautZone*pdm).fill(Array(largZone*pdm).fill(-1));
+    mobilite = Array(hautZone*pdm).fill(Array(largZone*pdm).fill(Array(4).fill(0))); */
     seuil=parseInt(document.getElementById('seuil').value);
     coinSudlat=coinSud.lat;
     coinSudlng=coinSud.lng;
@@ -799,7 +803,8 @@ function cartecellule(){
             for(a=0;a<nbantennes;a++){
                 if(puissance[a][i][j]>max) {max=puissance[a][i][j];	bestant=a;}
             }
-            cellules[i][j] = bestant;
+            zonearea.cellules[i][j] = bestant;
+
             if(max<seuil) continue;
             plat=coinSudlat+i*latBin;
             plng=coinSudlng+j*lngBin;
@@ -823,7 +828,7 @@ function cartecellule(){
             bins.push(bin);
         }
     }
-    fillMobiliteTableRand();
+    zonearea.fillMobiliteTableRand();
     document.getElementById('laButton').disabled = '';
 }
 function choixenv(){
@@ -917,15 +922,6 @@ function carteinterference(){
         }
     }
 }
-function fillMobiliteTableRand() {
-    mobilite.forEach(function(array2) {
-        array2.forEach(function (array3) {
-            array3.forEach(function (elem) {
-                elem = 1;
-            });
-        });
-    });
-}
 function onMapClick(e) {
     //alert("You clicked the map at " + e.latlng);
     if(modeclick==0) {modeclick=2;placeCoin(e.latlng);}
@@ -940,41 +936,6 @@ function onMapDbClick(e) {
 
 var mymap = L.map('mapid').setView([47.094818, 5.491389], 13);
 
-function calculateLa(){
-
-    nbZoneMin = parseInt(document.getElementById('minLa').value);
-    nbZoneMax = parseInt(document.getElementById('maxLa').value);
-    if (nbantennes == nbZoneMin && nbantennes == nbZoneMax){
-        //Une zone par cellule(antenne)
-    }
-
-
-    for(i = 0;i<=nbantennes;i++){
-        for(j=0;j<=nbantennes;j++){
-            if(i==j){
-                continue;
-            }else{
-                for(x = 0;x<=cellules.length;x++){
-                    for(y = 0 ; y<=cellules.length;y++){
-                        if(cellules[x][y] == i+1){
-                            if (mobilite[x][y].length == 4){ //Pour l'instant, on aura au maximum 4 adjacent, à voir par la suite pour en avoir 8, est-ce que c'est mieux???
-                                if (cellules[x-1][y] == j+1){
-                                    //Ajouter la mobilité 0 dans la fréquence (Cette maille est adjacente a celle d'une autre cellule)
-                                }
-                            }
-                        }else {
-                            continue;
-                        }
-                    }
-                }
-
-
-            }
-        }
-    }
-}
-
-
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -986,3 +947,11 @@ mymap.on('click', onMapClick);
 mymap.on('dblclick', onMapDbClick);
 frameantenna=document.getElementById('frameantenna');
 frameantenna.style.visibility='hidden';
+
+function initLa(){
+    nbZoneMin = parseInt(document.getElementById('minLa').value);
+    nbZoneMax = parseInt(document.getElementById('maxLa').value);
+    zonearea.calculateLa(nbantennes, nbZoneMin, nbZoneMax);
+}
+var buttonLa = document.getElementById('laButton');
+buttonLa.onclick=initLa;
