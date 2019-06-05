@@ -951,7 +951,7 @@ frameantenna.style.visibility='hidden';
 function initLa(){
     nbZoneMin = parseInt(document.getElementById('minLa').value);
     nbZoneMax = parseInt(document.getElementById('maxLa').value);
-    zonearea.calculateLa(nbantennes, nbZoneMin, nbZoneMax);
+    zonearea.calculateLa2(nbantennes, nbZoneMin, nbZoneMax);
 }
 var buttonLa = document.getElementById('laButton');
 buttonLa.onclick=initLa;
