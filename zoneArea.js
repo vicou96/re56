@@ -1,9 +1,11 @@
 class ZoneArea{
+  
     constructor(){
         this.mobilite = [];
         this.cellules=[];
         this.compatibilite=[]
     }
+
     fillMobiliteTableRand() {
         for (let i = 0; i < this.mobilite.length; i++) {
             for (let j = 0; j < this.mobilite[i].length; j++) {
@@ -13,45 +15,6 @@ class ZoneArea{
             }
         }
     }
-
-    calculateLa(nbantennes, nbZoneMin, nbZoneMax){
-        this.compatibilite = Array(nbantennes).fill(Array(nbantennes-1).fill(0));
-        nbZoneMin = parseInt(document.getElementById('minLa').value);
-        nbZoneMax = parseInt(document.getElementById('maxLa').value);
-        if (nbantennes === nbZoneMin && nbantennes === nbZoneMax){
-            //Une zone par cellule(antenne)
-        }
-
-/*                 mobilite[0]
-        mobilite[1] cellule mobilite[2]
-                   mobilite[3]
- */
-        for(let i = 0;i<nbantennes;i++){
-            for(let j=0;j<nbantennes;j++){
-                if(i==j){
-                    continue;
-                }else{
-                    for(let x = 0;x<this.cellules.length;x++){
-                        for(let y = 0 ; y<this.cellules.length;y++){
-                            if(this.cellules[x][y] === i){ // Si la cellule appartient a l'entenne recherchée
-                                if (this.mobilite[x][y].length === 4){ //Pour l'instant, on aura au maximum 4 adjacent, à voir par la suite pour en avoir 8, est-ce que c'est mieux???
-                                    if (this.cellules[x-1][y] === j){ //Si la cellule du dessus appartient a l'antenne target
-                                        //Ajouter la mobilité 0 dans la fréquence (Cette maille est adjacente a celle d'une autre cellule)
-                                        this.compatibilite[i][j] += mobilite[x][y];
-                                    }
-                                }
-                            }else {
-                                continue;
-                            }
-                        }
-                    }
-
-
-                }
-            }
-        }
-    }
-
 
     calculateLa2(nbantennes, nbZoneMin, nbZoneMax){
         this.fillMobiliteTableRand();
