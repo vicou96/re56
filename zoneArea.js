@@ -5,67 +5,33 @@ class ZoneArea{
         this.compatibilite=[]
     }
     fillMobiliteTableRand() {
-        for (let i = 0; i < this.mobilite.length; i++) {
-            for (let j = 0; j < this.mobilite[i].length; j++) {
-                for (let k = 0; k < this.mobilite[i][j].length; k++) {
-                    this.mobilite[i][j][k] = 1;
+        for (let i = 0; i < this.cellules.length; i++) {
+            this.mobilite.push(Array());
+            for (let j = 0; j < this.cellules[i].length; j++) {
+                this.mobilite[i].push(Array());
+                for (let k = 0; k < 4; k++) { //4 directions for now
+                    this.mobilite[i][j].push(Math.floor(Math.random() * Math.floor(100)));
                 }
             }
         }
     }
-
-    calculateLa(nbantennes, nbZoneMin, nbZoneMax){
-        this.compatibilite = Array(nbantennes).fill(Array(nbantennes-1).fill(0));
-        nbZoneMin = parseInt(document.getElementById('minLa').value);
-        nbZoneMax = parseInt(document.getElementById('maxLa').value);
-        if (nbantennes === nbZoneMin && nbantennes === nbZoneMax){
-            //Une zone par cellule(antenne)
-        }
-
-/*                 mobilite[0]
-        mobilite[1] cellule mobilite[2]
-                   mobilite[3]
- */
-        for(let i = 0;i<nbantennes;i++){
-            for(let j=0;j<nbantennes;j++){
-                if(i==j){
-                    continue;
-                }else{
-                    for(let x = 0;x<this.cellules.length;x++){
-                        for(let y = 0 ; y<this.cellules.length;y++){
-                            if(this.cellules[x][y] === i){ // Si la cellule appartient a l'entenne recherchée
-                                if (this.mobilite[x][y].length === 4){ //Pour l'instant, on aura au maximum 4 adjacent, à voir par la suite pour en avoir 8, est-ce que c'est mieux???
-                                    if (this.cellules[x-1][y] === j){ //Si la cellule du dessus appartient a l'antenne target
-                                        //Ajouter la mobilité 0 dans la fréquence (Cette maille est adjacente a celle d'une autre cellule)
-                                        this.compatibilite[i][j] += mobilite[x][y];
-                                    }
-                                }
-                            }else {
-                                continue;
-                            }
-                        }
-                    }
-
-
-                }
-            }
-        }
-    }
-
 
     calculateLa2(nbantennes, nbZoneMin, nbZoneMax){
         this.fillMobiliteTableRand();
-        console.log(this.mobilite[0][0][0]);
 
-        this.compatibilite = Array(nbantennes).fill(Array(nbantennes).fill(0));
+        for (let i = 0; i < nbantennes; i++) {
+            this.compatibilite.push(Array());
+            for (let j = 0; j < nbantennes; j++) {
+                this.compatibilite[i].push(0);
+
+            }
+        }
         if (nbantennes === nbZoneMin && nbantennes === nbZoneMax){
             //Une zone par cellule(antenne)
         }
         console.log(this.mobilite.length);
         for(let x = 0;x<this.cellules.length;x++) {
-            s = "Maillage [";
             for (let y = 0; y < this.cellules[x].length; y++) {
-                s += this.cellules[x][y]+",";
                 let currentAntenna = this.cellules[x][y];
                 if(x!==0 && currentAntenna!==this.cellules[x-1][y]){ // HAUT
                     this.compatibilite[currentAntenna][this.cellules[x-1][y]]+=this.mobilite[x][y][0];
@@ -83,10 +49,7 @@ class ZoneArea{
                     this.compatibilite[currentAntenna][this.cellules[x+1][y]]+=this.mobilite[x][y][3];
                 }
             }
-            console.log(s+"]");
         }
-        console.log(this.compatibilite.length);
-        console.log(this.compatibilite[0].length);
         for(let a = 0; a< this.compatibilite.length;a++){
             s = "[";
             for(let b =0 ;b<this.compatibilite[a].length;b++){
@@ -96,5 +59,15 @@ class ZoneArea{
             console.log(s+"]");
         }
         //La compatibilité inter antenne est caclulée il faut maintenant coupler les antennes
+    }
+    printcellules(){
+
+        for (let i = 0; i < this.cellules.length; i++) {
+            s="Cellule [";
+            for (let j = 0; j <this.cellules[i].length; j++) {
+                s+=this.cellules[i][j]+",";
+            }
+            console.log(s+"]");
+        }
     }
 }

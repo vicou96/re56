@@ -788,28 +788,29 @@ function addAntenne(){
 
 function cartecellule(){
     vider();
-    zonearea.cellules = Array(hautZone*pdm).fill(Array(largZone*pdm).fill(-1));
-    zonearea.mobilite = Array(hautZone*pdm).fill(Array(largZone*pdm).fill(Array(4).fill(0)));
-   /* cellules = Array(hautZone*pdm).fill(Array(largZone*pdm).fill(-1));
-    mobilite = Array(hautZone*pdm).fill(Array(largZone*pdm).fill(Array(4).fill(0))); */
+    zonearea.cellules = Array();
+
+    zonearea.mobilite = Array();
     seuil=parseInt(document.getElementById('seuil').value);
     coinSudlat=coinSud.lat;
     coinSudlng=coinSud.lng;
     var a=0;
-    for(i=0;i<hautZone*pdm;i++){
-        for(j=0;j<largZone*pdm;j++){
+    for(let i=0;i<hautZone*pdm;i++){
+        zonearea.cellules.push(Array());
+        for(let j=0;j<largZone*pdm;j++){
             max=-1000;
             bestant=-1;
             for(a=0;a<nbantennes;a++){
                 if(puissance[a][i][j]>max) {max=puissance[a][i][j];	bestant=a;}
             }
-            console.log(bestant);
-            zonearea.cellules[i][j] = bestant;
+
 
             if(max<seuil) continue;
             plat=coinSudlat+i*latBin;
             plng=coinSudlng+j*lngBin;
 
+            zonearea.cellules[i].push(bestant);
+            // console.log(zonearea.cellules[i][j]);
             r=(bestant*82)%213;
             v=(bestant*17)%207;
             b=(bestant*87)%107+107;
