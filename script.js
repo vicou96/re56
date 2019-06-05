@@ -803,6 +803,7 @@ function cartecellule(){
             for(a=0;a<nbantennes;a++){
                 if(puissance[a][i][j]>max) {max=puissance[a][i][j];	bestant=a;}
             }
+            console.log(bestant);
             zonearea.cellules[i][j] = bestant;
 
             if(max<seuil) continue;
