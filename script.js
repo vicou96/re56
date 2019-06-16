@@ -89,6 +89,7 @@ var circle;
 var couvertureCell = [];
 
 var axes = [];
+var axeSaved;
 var largaxes=[];
 var estSurRoute=[];
 var orientation=[];
@@ -924,14 +925,52 @@ function carteinterference(){
         }
     }
 }
+function addaxe(){
+    modeclick=4;
+}
+function addRoute(coord,isSecondClick) {
+    if(isSecondClick) {
+        route = L.polyline([
+            axeSaved,
+            coord], {weight: 1, color: 'red'});
+        route.addTo(mymap);
+        var bounds = route.getBounds();
+        console.log(route.getLatLngs());
+       for(i=0;i<pdm*hautZone;i++){
+           for(j=0;j<largZone*pdm;j++){
+               point=L.latLng(coinSud.lat+i*latBin, coinSud.lng+j*lngBin);
+               carre = L.
+               var pointBounds = point.toBounds();
+               console.log("agag");
+               if(bounds.intersects(pointBounds))
+               {
+                   console.log("i: "+i+" j:"+j+" ON LINE");}
+           }
+       }
+        var person = prompt("Veuillez entrer la valeur de mobilité", "5");
+    }else{
+        axeSaved = coord;
+    }
+ /*   route = L.polygon(coinsBat,
+        {fillColor: 'red',
+            fillOpacity: 1,
+            color : 'transparent'}).addTo(mymap);*/
+
+}
 function onMapClick(e) {
     //alert("You clicked the map at " + e.latlng);
     if(modeclick==0) {modeclick=2;placeCoin(e.latlng);}
     else if(modeclick==1) {modeclick=2;placeAntenne(e.latlng,0);}
     else if(modeclick==3) {placeBat(e.latlng);}
+    else if(modeclick==4){
+        modeclick=5;
+        addRoute(e.latlng,0);}
+    else if(modeclick==5){modeclick=2;addRoute(e.latlng,1);}
 }
 function onMapDbClick(e) {
     if(modeclick==3) {modeclick=2;placeBat2(e.latlng);}
+    if(modeclick==4) {modeclick=5;addRoute(e.latlng,0);}
+    if(modeclick==5) {modeclick=2;addRoute(e.latlng,1);}
 }
 //google.maps.event.addDomListener(window, 'load', initialize);
 

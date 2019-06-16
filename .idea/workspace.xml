@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="02a65621-057c-43c4-a94d-a2bec18a8774" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/zoneArea.js" beforeDir="false" afterPath="$PROJECT_DIR$/zoneArea.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,8 +17,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Mobile-Net-Opt-Tool.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="531">
-              <caret line="115" column="71" selection-start-line="115" selection-start-column="63" selection-end-line="115" selection-end-column="71" />
+            <state relative-caret-position="357">
+              <caret line="148" column="88" selection-start-line="148" selection-start-column="82" selection-end-line="148" selection-end-column="88" />
               <folding>
                 <element signature="n#style#0;n#input#0;n#div#10;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#11;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -29,8 +31,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/zoneArea.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-100">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="-9">
+              <caret line="49" column="17" lean-forward="true" selection-start-line="49" selection-start-column="17" selection-end-line="49" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -38,8 +40,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-300">
-              <caret line="795" column="27" selection-start-line="795" selection-start-column="27" selection-end-line="795" selection-end-column="27" />
+            <state relative-caret-position="180">
+              <caret line="872" column="12" selection-start-line="872" selection-start-column="12" selection-end-line="872" selection-end-column="12" />
               <folding>
                 <element signature="e#9#15#0" expanded="true" />
               </folding>
@@ -68,6 +70,7 @@
       <find>Antenn</find>
       <find>latlng</find>
       <find>placeA</find>
+      <find>modec</find>
     </findStrings>
     <replaceStrings>
       <replace>src=&quot;img/</replace>
@@ -111,6 +114,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -122,7 +126,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -157,7 +160,8 @@
       <workItem from="1557152304593" duration="6240000" />
       <workItem from="1558366427611" duration="3114000" />
       <workItem from="1559575809811" duration="60000" />
-      <workItem from="1559725843352" duration="11355000" />
+      <workItem from="1559725843352" duration="11952000" />
+      <workItem from="1560695713805" duration="2925000" />
     </task>
     <task id="LOCAL-00001" summary="Add images and separate js">
       <created>1557154489797</created>
@@ -177,12 +181,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20769000" />
+    <option name="totallyTimeSpent" value="24291000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1928" y="37" width="1936" height="1056" extended-state="6" />
+    <frame x="-1928" y="26" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25799572" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26066098" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -214,8 +219,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Mobile-Net-Opt-Tool.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="531">
-          <caret line="115" column="71" selection-start-line="115" selection-start-column="63" selection-end-line="115" selection-end-column="71" />
+        <state relative-caret-position="357">
+          <caret line="148" column="88" selection-start-line="148" selection-start-column="82" selection-end-line="148" selection-end-column="88" />
           <folding>
             <element signature="n#style#0;n#input#0;n#div#10;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#11;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -226,15 +231,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/zoneArea.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-100">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="-9">
+          <caret line="49" column="17" lean-forward="true" selection-start-line="49" selection-start-column="17" selection-end-line="49" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-300">
-          <caret line="795" column="27" selection-start-line="795" selection-start-column="27" selection-end-line="795" selection-end-column="27" />
+        <state relative-caret-position="180">
+          <caret line="872" column="12" selection-start-line="872" selection-start-column="12" selection-end-line="872" selection-end-column="12" />
           <folding>
             <element signature="e#9#15#0" expanded="true" />
           </folding>

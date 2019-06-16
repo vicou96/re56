@@ -70,4 +70,6 @@ class ZoneArea{
             console.log(s+"]");
         }
     }
+
+
 }
