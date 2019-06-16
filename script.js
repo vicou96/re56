@@ -100,6 +100,7 @@ var zonearea = new ZoneArea();
 var cellules=[];
 var LA=[];
 var mobilite=[];
+var routes = [];
 
 var colors=[];
 
@@ -827,7 +828,30 @@ function cartecellule(){
                 [plat, plng+lngBin]
             ],{fillColor: couleur,
                 fillOpacity: 1,
-                color : 'transparent'}).addTo(mymap);
+                color : 'transparent'});
+
+            var turfcellule = turf.polygon([[
+                [plat, plng],
+                [plat+latBin, plng],
+                [plat+latBin, plng+lngBin],
+                [plat, plng+lngBin], [plat, plng]]], { name: 'poly1' });
+
+            for (var k = 0; k < routes.length; k++) {
+              var route = turf.lineString([[routes[k].getLatLngs()[0].lat, routes[k].getLatLngs()[0].lng], [routes[k].getLatLngs()[1].lat, routes[k].getLatLngs()[1].lng]]);
+              if(turf.lineIntersect(turfcellule, route).features.length !== 0) {
+                bin = L.polygon([
+                    [plat, plng],
+                    [plat+latBin, plng],
+                    [plat+latBin, plng+lngBin],
+                    [plat, plng+lngBin]
+                ],{fillColor: "#00000",
+                    fillOpacity: 1,
+                    color : 'transparent'});
+              }
+
+                
+            }
+            bin.addTo(mymap);
             bins.push(bin);
         }
     }
@@ -935,27 +959,10 @@ function addRoute(coord,isSecondClick) {
             coord], {weight: 1, color: 'red'});
         route.addTo(mymap);
         var bounds = route.getBounds();
-        console.log(route.getLatLngs());
-       for(i=0;i<pdm*hautZone;i++){
-           for(j=0;j<largZone*pdm;j++){
-               point=L.latLng(coinSud.lat+i*latBin, coinSud.lng+j*lngBin);
-               carre = L.
-               var pointBounds = point.toBounds();
-               console.log("agag");
-               if(bounds.intersects(pointBounds))
-               {
-                   console.log("i: "+i+" j:"+j+" ON LINE");}
-           }
-       }
-        var person = prompt("Veuillez entrer la valeur de mobilité", "5");
+        routes.push(route);
     }else{
         axeSaved = coord;
     }
- /*   route = L.polygon(coinsBat,
-        {fillColor: 'red',
-            fillOpacity: 1,
-            color : 'transparent'}).addTo(mymap);*/
-
 }
 function onMapClick(e) {
     //alert("You clicked the map at " + e.latlng);
@@ -973,7 +980,7 @@ function onMapDbClick(e) {
     if(modeclick==5) {modeclick=2;addRoute(e.latlng,1);}
 }
 //google.maps.event.addDomListener(window, 'load', initialize);
-//PlaceAntenne Custom 
+//PlaceAntenne Custom
 function placeAntenne2(location,power,type,tilt,azimut) {
     antenne=new Antenne(location,true);
     omni = true;
@@ -981,7 +988,7 @@ function placeAntenne2(location,power,type,tilt,azimut) {
     antenne.tilt=0.5235987755982988;
     antenne.azimut=0;
     antenne.puissance = 30 ;
-   
+
     //display the antenna
     //circle if it is an omni antenna
     if( omni==true){
@@ -995,7 +1002,7 @@ function placeAntenne2(location,power,type,tilt,azimut) {
         markerantenna.push(circle);
     }
     //a line if it is a directional antenna
-    
+
     antennes.push(antenne);
     nbantennes++;
     //google.maps.event.removeListener(addantenna);
