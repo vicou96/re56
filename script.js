@@ -101,6 +101,7 @@ var cellules=[];
 var LA=[];
 var mobilite=[];
 var routes = [];
+var person;
 
 var colors=[];
 
@@ -796,6 +797,7 @@ function cartecellule(){
     seuil=parseInt(document.getElementById('seuil').value);
     coinSudlat=coinSud.lat;
     coinSudlng=coinSud.lng;
+
     var a=0;
     for(let i=0;i<hautZone*pdm;i++){
         zonearea.cellules.push(Array());
@@ -837,25 +839,16 @@ function cartecellule(){
                 [plat, plng+lngBin], [plat, plng]]], { name: 'poly1' });
 
             for (var k = 0; k < routes.length; k++) {
-              var route = turf.lineString([[routes[k].getLatLngs()[0].lat, routes[k].getLatLngs()[0].lng], [routes[k].getLatLngs()[1].lat, routes[k].getLatLngs()[1].lng]]);
-              if(turf.lineIntersect(turfcellule, route).features.length !== 0) {
-                bin = L.polygon([
-                    [plat, plng],
-                    [plat+latBin, plng],
-                    [plat+latBin, plng+lngBin],
-                    [plat, plng+lngBin]
-                ],{fillColor: "#00000",
-                    fillOpacity: 1,
-                    color : 'transparent'});
-              }
 
-                
+
+
+
             }
             bin.addTo(mymap);
             bins.push(bin);
         }
     }
-    zonearea.fillMobiliteTableRand();
+    //zonearea.fillMobiliteTableRand();
     document.getElementById('laButton').disabled = '';
 }
 function choixenv(){
@@ -958,8 +951,60 @@ function addRoute(coord,isSecondClick) {
             axeSaved,
             coord], {weight: 1, color: 'red'});
         route.addTo(mymap);
+        person = parseFloat(prompt("Choisissez une valeur d'importance"));
         var bounds = route.getBounds();
-        routes.push(route);
+        coinSudlat=coinSud.lat;
+        var tmp = [0,0];
+        var first =true;
+        coinSudlng=coinSud.lng;
+        var route = turf.lineString([[route.getLatLngs()[0].lat, route.getLatLngs()[0].lng], [route.getLatLngs()[1].lat, route.getLatLngs()[1].lng]]);
+        for(let i=0;i<hautZone*pdm;i++){
+          zonearea.mobilite.push(Array());
+          for(let j=0;j<largZone*pdm;j++){
+            zonearea.mobilite[i].push(Array());
+            for (let k = 0; k < 4; k++) { //4 directions for now
+                zonearea.mobilite[i][j].push(0);
+            }
+            plat=coinSudlat+i*latBin;
+            plng=coinSudlng+j*lngBin;
+
+            var turfcellule = turf.polygon([[
+                [plat, plng],
+                [plat+latBin, plng],
+                [plat+latBin, plng+lngBin],
+                [plat, plng+lngBin], [plat, plng]]], { name: 'poly1' });
+            if(turf.lineIntersect(turfcellule, route).features.length !== 0) {
+
+              if(i - 1 == tmp[0]) {
+                zonearea.mobilite[i][j][1] += person;
+                zonearea.mobilite[tmp[0]][tmp[1]][2] += person;
+              }
+
+              if(i+1 == tmp[0]) {
+                zonearea.mobilite[i][j][2] += person;
+                zonearea.mobilite[tmp[0]][tmp[1]][1] += person;
+              }
+
+              if(j-1 == tmp[1]) {
+                zonearea.mobilite[i][j][0] += person;
+                zonearea.mobilite[tmp[0]][tmp[1]][3] += person;
+              }
+
+              if(j+1 == tmp[1]) {
+                zonearea.mobilite[i][j][3] += person;
+                zonearea.mobilite[tmp[0]][tmp[1]][0] += person;
+              }
+
+              tmp[0] = i;
+              tmp[1] = j;
+            }
+
+            routes.push(route);
+        }
+      }
+
+
+
     }else{
         axeSaved = coord;
     }
