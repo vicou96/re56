@@ -156,7 +156,8 @@ function placeCoin(location) {
             orientation[i][j]=-1;
         }
     }
-
+    zonearea.fillMobiliteTableRand(hautZone*pdm,largZone*pdm);
+    console.log(zonearea.mobilite[0]);
     drawPath();
 }
 function degriser(){
@@ -792,8 +793,6 @@ function addAntenne(){
 function cartecellule(){
     vider();
     zonearea.cellules = Array();
-
-    zonearea.mobilite = Array();
     seuil=parseInt(document.getElementById('seuil').value);
     coinSudlat=coinSud.lat;
     coinSudlng=coinSud.lng;
@@ -848,7 +847,6 @@ function cartecellule(){
             bins.push(bin);
         }
     }
-    //zonearea.fillMobiliteTableRand();
     document.getElementById('laButton').disabled = '';
 }
 function choixenv(){
@@ -959,12 +957,8 @@ function addRoute(coord,isSecondClick) {
         coinSudlng=coinSud.lng;
         var route = turf.lineString([[route.getLatLngs()[0].lat, route.getLatLngs()[0].lng], [route.getLatLngs()[1].lat, route.getLatLngs()[1].lng]]);
         for(let i=0;i<hautZone*pdm;i++){
-          zonearea.mobilite.push(Array());
+
           for(let j=0;j<largZone*pdm;j++){
-            zonearea.mobilite[i].push(Array());
-            for (let k = 0; k < 4; k++) { //4 directions for now
-                zonearea.mobilite[i][j].push(0);
-            }
             plat=coinSudlat+i*latBin;
             plng=coinSudlng+j*lngBin;
 
@@ -976,23 +970,23 @@ function addRoute(coord,isSecondClick) {
             if(turf.lineIntersect(turfcellule, route).features.length !== 0) {
 
               if(i - 1 == tmp[0]) {
-                zonearea.mobilite[i][j][1] += person;
-                zonearea.mobilite[tmp[0]][tmp[1]][2] += person;
-              }
-
-              if(i+1 == tmp[0]) {
-                zonearea.mobilite[i][j][2] += person;
-                zonearea.mobilite[tmp[0]][tmp[1]][1] += person;
-              }
-
-              if(j-1 == tmp[1]) {
                 zonearea.mobilite[i][j][0] += person;
                 zonearea.mobilite[tmp[0]][tmp[1]][3] += person;
               }
 
-              if(j+1 == tmp[1]) {
+              if(i+1 == tmp[0]) {
                 zonearea.mobilite[i][j][3] += person;
                 zonearea.mobilite[tmp[0]][tmp[1]][0] += person;
+              }
+
+              if(j-1 == tmp[1]) {
+                zonearea.mobilite[i][j][1] += person;
+                zonearea.mobilite[tmp[0]][tmp[1]][2] += person;
+              }
+
+              if(j+1 == tmp[1]) {
+                zonearea.mobilite[i][j][2] += person;
+                zonearea.mobilite[tmp[0]][tmp[1]][1] += person;
               }
 
               tmp[0] = i;

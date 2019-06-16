@@ -4,21 +4,19 @@ class ZoneArea{
         this.cellules=[];
         this.compatibilite=[]
     }
-    fillMobiliteTableRand() {
-        for (let i = 0; i < this.cellules.length; i++) {
+    fillMobiliteTableRand(xsize,ysize) {
+        for (let i = 0; i < xsize; i++) {
             this.mobilite.push(Array());
-            for (let j = 0; j < this.cellules[i].length; j++) {
+            for (let j = 0; j < ysize; j++) {
                 this.mobilite[i].push(Array());
                 for (let k = 0; k < 4; k++) { //4 directions for now
-                    this.mobilite[i][j].push(Math.floor(Math.random() * Math.floor(100)));
+                    this.mobilite[i][j].push(0);
                 }
             }
         }
     }
 
     calculateLa2(nbantennes, nbZoneMin, nbZoneMax){
-        this.fillMobiliteTableRand();
-
         for (let i = 0; i < nbantennes; i++) {
             this.compatibilite.push(Array());
             for (let j = 0; j < nbantennes; j++) {
