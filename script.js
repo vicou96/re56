@@ -934,9 +934,44 @@ function onMapDbClick(e) {
     if(modeclick==3) {modeclick=2;placeBat2(e.latlng);}
 }
 //google.maps.event.addDomListener(window, 'load', initialize);
+//PlaceAntenne Custom 
+function placeAntenne2(location,power,type,tilt,azimut) {
+    antenne=new Antenne(location,true);
+    omni = true;
+    antenne.omni = omni;
+    antenne.tilt=0.5235987755982988;
+    antenne.azimut=0;
+    antenne.puissance = 30 ;
+   
+    //display the antenna
+    //circle if it is an omni antenna
+    if( omni==true){
+        var circle=L.circle([location.lat, location.lng], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 10
+        }).addTo(mymap);
+        // Add the circle for this city to the map.
+        markerantenna.push(circle);
+    }
+    //a line if it is a directional antenna
+    
+    antennes.push(antenne);
+    nbantennes++;
+    //google.maps.event.removeListener(addantenna);
+    document.getElementById('message').value = "Choisissez une action !";
+    frameantenna.style.visibility='hidden';
+}
 
 
 var mymap = L.map('mapid').setView([47.094818, 5.491389], 13);
+var lat = 47.10845747289683;
+var lng = 5.481319427490235;
+placeCoin(L.latLng(lat,lng));
+placeAntenne2(L.latLng(47.11196240504518,5.483207702636719));
+placeAntenne2(L.latLng(47.11149509409445,5.487499237060548));
+placeAntenne2(L.latLng(47.10915847779137,5.484409332275391));
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
