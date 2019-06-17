@@ -974,7 +974,21 @@ function addRoute(coord,isSecondClick) {
                 }
             ]
         }).addTo(mymap);
+
+        var directionLeft = false;
+        var directionTop = false;
+        var direction = false;
+        if(coord.lat > axeSaved.lat) {
+          directionTop = true;
+        }
+
+        if(coord.lng > axeSaved.lng) {
+          directionLeft = true;
+        }
         person = parseFloat(prompt("Choisissez une valeur d'importance"));
+        if (confirm('Is this a directionnal route')) {
+            var direction = true;
+        }
         var bounds = route.getBounds();
         coinSudlat=coinSud.lat;
         var tmp = [0,0];
@@ -996,23 +1010,57 @@ function addRoute(coord,isSecondClick) {
             if(turf.lineIntersect(turfcellule, route).features.length !== 0) {
 
               if(i - 1 == tmp[0]) {
-                zonearea.mobilite[i][j][0] += person;
-                zonearea.mobilite[tmp[0]][tmp[1]][3] += person;
+                if(direction) {
+                  if(directionTop) {
+                    zonearea.mobilite[tmp[0]][tmp[1]][3] += person;
+                  }else {
+                    zonearea.mobilite[i][j][0] += person;
+                  }
+                } else {
+                  zonearea.mobilite[i][j][0] += person;
+                  zonearea.mobilite[tmp[0]][tmp[1]][3] += person;
+                }
               }
 
               if(i+1 == tmp[0]) {
-                zonearea.mobilite[i][j][3] += person;
-                zonearea.mobilite[tmp[0]][tmp[1]][0] += person;
+                if(direction) {
+                  if(directionTop) {
+                    zonearea.mobilite[i][j][3] += person;
+                  } else {
+                    zonearea.mobilite[tmp[0]][tmp[1]][0] += person;
+
+                  }
+                } else {
+                  zonearea.mobilite[i][j][3] += person;
+                  zonearea.mobilite[tmp[0]][tmp[1]][0] += person;
+                }
+
               }
 
               if(j-1 == tmp[1]) {
-                zonearea.mobilite[i][j][1] += person;
-                zonearea.mobilite[tmp[0]][tmp[1]][2] += person;
+                if(direction) {
+                  if(directionLeft) {
+                    zonearea.mobilite[tmp[0]][tmp[1]][2] += person;
+                  }else {
+                    zonearea.mobilite[i][j][1] += person;
+                  }
+                } else {
+                  zonearea.mobilite[i][j][1] += person;
+                  zonearea.mobilite[tmp[0]][tmp[1]][2] += person;
+                }
               }
 
               if(j+1 == tmp[1]) {
-                zonearea.mobilite[i][j][2] += person;
-                zonearea.mobilite[tmp[0]][tmp[1]][1] += person;
+                if(direction) {
+                  if(directionLeft) {
+                    zonearea.mobilite[i][j][2] += person;
+                  }else {
+                    zonearea.mobilite[tmp[0]][tmp[1]][1] += person;
+                  }
+                } else {
+                  zonearea.mobilite[i][j][2] += person;
+                  zonearea.mobilite[tmp[0]][tmp[1]][1] += person;
+                }
               }
 
               tmp[0] = i;
