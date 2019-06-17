@@ -17,6 +17,7 @@ class ZoneArea{
     }
 
     calculateLa2(nbantennes, nbZoneMin, nbZoneMax){
+        this.compatibilite=[];
         for (let i = 0; i < nbantennes; i++) {
             this.compatibilite.push(Array());
             for (let j = 0; j < nbantennes; j++) {

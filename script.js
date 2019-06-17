@@ -102,7 +102,8 @@ var LA=[];
 var mobilite=[];
 var routes = [];
 var person;
-
+var pointRoute;
+var routeTmp = null;
 var colors=[];
 
 var start;
@@ -942,19 +943,44 @@ function carteinterference(){
 }
 function addaxe(){
     modeclick=4;
+    document.getElementById("message").value = "Sélectionner le premier point de la route !";
 }
 function addRoute(coord,isSecondClick) {
     if(isSecondClick) {
+        mymap.removeLayer(pointRoute);
         route = L.polyline([
             axeSaved,
             coord], {weight: 1, color: 'red'});
         route.addTo(mymap);
+        var routeinv = L.polyline([
+            coord,
+            axeSaved], {weight: 1, color: 'red'});
+
+        var arrowHead = L.polylineDecorator(route, {
+            patterns: [
+                {
+                    offset: '100%',
+                    repeat: 0,
+                    symbol: L.Symbol.arrowHead({pixelSize: 15, polygon: false ,pathOptions: {stroke: true,color:"red"}})
+                }
+            ]
+        }).addTo(mymap);
+        var arrowHead2 = L.polylineDecorator(routeinv, {
+            patterns: [
+                {
+                    offset: '100%',
+                    repeat: 0,
+                    symbol: L.Symbol.arrowHead({pixelSize: 15, polygon: false ,pathOptions: {stroke: true,color:"red"}})
+                }
+            ]
+        }).addTo(mymap);
         person = parseFloat(prompt("Choisissez une valeur d'importance"));
         var bounds = route.getBounds();
         coinSudlat=coinSud.lat;
         var tmp = [0,0];
         var first =true;
         coinSudlng=coinSud.lng;
+
         var route = turf.lineString([[route.getLatLngs()[0].lat, route.getLatLngs()[0].lng], [route.getLatLngs()[1].lat, route.getLatLngs()[1].lng]]);
         for(let i=0;i<hautZone*pdm;i++){
 
@@ -1001,6 +1027,8 @@ function addRoute(coord,isSecondClick) {
 
     }else{
         axeSaved = coord;
+        pointRoute = L.circle(coord,{radius:10,color:"red"});
+        pointRoute.addTo(mymap);
     }
 }
 function onMapClick(e) {
@@ -1009,9 +1037,13 @@ function onMapClick(e) {
     else if(modeclick==1) {modeclick=2;placeAntenne(e.latlng,0);}
     else if(modeclick==3) {placeBat(e.latlng);}
     else if(modeclick==4){
+        document.getElementById("message").value = "Sélectionner le deuxième point de la route !";
+
         modeclick=5;
         addRoute(e.latlng,0);}
-    else if(modeclick==5){modeclick=2;addRoute(e.latlng,1);}
+    else if(modeclick==5){
+        document.getElementById("message").value = "Choisissez une action!";
+        modeclick=2;addRoute(e.latlng,1);}
 }
 function onMapDbClick(e) {
     if(modeclick==3) {modeclick=2;placeBat2(e.latlng);}
@@ -1057,7 +1089,7 @@ placeCoin(L.latLng(lat,lng));
 placeAntenne2(L.latLng(47.11196240504518,5.483207702636719));
 placeAntenne2(L.latLng(47.11149509409445,5.487499237060548));
 placeAntenne2(L.latLng(47.10915847779137,5.484409332275391));
-
+modeclick = 2;
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -1069,7 +1101,17 @@ mymap.on('click', onMapClick);
 mymap.on('dblclick', onMapDbClick);
 frameantenna=document.getElementById('frameantenna');
 frameantenna.style.visibility='hidden';
-
+mymap.on('mousemove',function(ev) {
+    if(modeclick==5){
+        if(routeTmp!==null){
+            mymap.removeLayer(routeTmp);
+        }
+        routeTmp = L.polyline([
+            axeSaved,
+            ev.latlng], {weight: 2, color: 'grey'});
+        routeTmp.addTo(mymap);
+    }
+});
 function initLa(){
     nbZoneMin = parseInt(document.getElementById('minLa').value);
     nbZoneMax = parseInt(document.getElementById('maxLa').value);
